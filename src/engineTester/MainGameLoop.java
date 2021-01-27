@@ -72,11 +72,10 @@ public class MainGameLoop {
 		
 		// ------------------ load fonts & text ---------------------
 		
-		/*
 		FontType font = loader.loadFont("candara");
-		GUIText text = new GUIText("Hello World!", 3, font, new Vector2f(0.75f, 0.03f), 1f, false);
-		text.setColor(0, 0.8f, 0);
-		*/
+		GUIText text = new GUIText("Move with WASD, jump with Spacebar, hold Shift for super sprint, hold Right-click to move the camera and zoom with the scroll wheel.",
+				1.2f, font, new Vector2f(0.01f, 0.01f), 1f, false);
+		text.setColor(1f, 0, 0);
 		
 		
 		// ------------ load models and textures ------------
@@ -112,11 +111,11 @@ public class MainGameLoop {
 		
 		
 		// particle textures
+		ParticleTexture fire = new ParticleTexture(loader.loadTexture("particles/fire"), 8, true);
 		/*
 		ParticleTexture cosmic = new ParticleTexture(loader.loadTexture("particles/cosmic"), 4, false);
 		ParticleTexture orange = new ParticleTexture(loader.loadTexture("particles/orange"), 4, true);
 		ParticleTexture star = new ParticleTexture(loader.loadTexture("particles/star"), 1, false);
-		ParticleTexture fire = new ParticleTexture(loader.loadTexture("particles/fire"), 8, true);
 		ParticleTexture smoke = new ParticleTexture(loader.loadTexture("particles/smoke"), 8, false);
 		*/
 	
@@ -133,6 +132,9 @@ public class MainGameLoop {
 			}
 		}
 		TerrainGrid terrainGrid = new TerrainGrid(terrains, gridSize);
+		float a = terrains.get(0).getCenterX();
+		float b = terrains.get(0).getCenterZ();
+		player.setPosition(new Vector3f(a, terrains.get(0).getHeightOfTerrain(a, b), b));
 		
 		
 		// ------------ add water ------------
@@ -149,12 +151,12 @@ public class MainGameLoop {
 		entities.add(player);
 		float upperLimit = terrainGrid.getSize() * Terrain.SIZE();
 		float x, y, z;
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 500; i++) {
 			do {
 				x = getRandomFloat(random, 0, upperLimit);
 				z = getRandomFloat(random, 0, upperLimit);
 			} while ((y = terrainGrid.getTerrainAt(x, z).getHeightOfTerrain(x, z)) < 0);
-			entities.add(new Entity(pineTreeModel, new Vector3f(x, y, z), 0, getRandomFloat(random, 0, 1), 0, 1));
+			entities.add(new Entity(pineTreeModel, new Vector3f(x, y-0.3f, z), 0, getRandomFloat(random, 0, 1), 0, 1));
 		}
 		/*
 		entities.add(new Entity(rocks, new Vector3f(100,  4.7f,  100), 0, 0, 0, 100));
@@ -164,10 +166,17 @@ public class MainGameLoop {
 		
 		
 		List<Entity> normalMapEntities = new ArrayList<>();
+		for (int i = 0; i < 50; i++) {
+			do {
+				x = getRandomFloat(random, 0, upperLimit);
+				z = getRandomFloat(random, 0, upperLimit);
+			} while ((y = terrainGrid.getTerrainAt(x, z).getHeightOfTerrain(x, z) + 5 ) >= 0);
+			normalMapEntities.add(new Entity(boulder, new Vector3f(x, y, z), 0, getRandomFloat(random, 0, 1), 0, 1));
+		}
 		
 		//normalMapEntities.add(new Entity(barrel, new Vector3f(126, terrains.get(0).getHeightOfTerrain(126,  71) + 20, 71), 0, 0, 0, 1f));
 		//normalMapEntities.add(new Entity(boulder, new Vector3f(110, terrains.get(0).getHeightOfTerrain(110,  89) + 20, 89), 0, 0, 0, 1f));
-		normalMapEntities.add(new Entity(crate, new Vector3f(80, terrains.get(0).getHeightOfTerrain(80,  108) + 20, 108), 0, 0, 0, 0.1f));
+		//normalMapEntities.add(new Entity(crate, new Vector3f(80, terrains.get(0).getHeightOfTerrain(80,  108) + 20, 108), 0, 0, 0, 0.1f));
 		
 		
 		List<Entity> allEntitiesList = new ArrayList<>(entities);
@@ -200,6 +209,8 @@ public class MainGameLoop {
 		
 		
 		// ------------ add particles -------------
+		ParticleSystem system = new ParticleSystem(fire, 100, 2, 0.1f, 1.5f, 30f);
+		system.randomizeRotation();
 		/*
 		ParticleSystem[] system = new ParticleSystem[5];
 		system[0] = new ParticleSystem(cosmic, 200, 10, 0.2f, 2, 3.6f);
@@ -228,8 +239,12 @@ public class MainGameLoop {
 			system[2].generateParticles(new Vector3f(137, 1 + yOffset, 180));
 			system[3].generateParticles(new Vector3f(92, 6 + yOffset, 172));
 			system[4].generateParticles(new Vector3f(49, 3 + yOffset, 161));
-			ParticleMaster.update(camera);
 			*/
+			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				system.generateParticles(new Vector3f(player.getPosition()));
+			}
+			
+			ParticleMaster.update(camera);
 			
 			/*
 			normalMapEntities.get(0).increaseRotation(0, 1f, 0);
@@ -265,11 +280,11 @@ public class MainGameLoop {
 			waterRenderer.render(waters, camera, sun);
 			
 			
-			//ParticleMaster.renderParticles(camera);
+			ParticleMaster.renderParticles(camera);
 			
 			//guiRenderer.render(guis);
 			
-			//TextMaster.render();
+			TextMaster.render();
 			
 			DisplayManager.updateDisplay();
 		}
