@@ -9,6 +9,8 @@ import particles.Particle;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
+import postProcessing.Fbo;
+import postProcessing.PostProcessing;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -64,8 +66,8 @@ public class MainGameLoop {
 		GuiRenderer guiRenderer = new GuiRenderer(loader);
 		
 		WaterShader waterShader = new WaterShader();
-		WaterFrameBuffers fbos = new WaterFrameBuffers();
-		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
+		WaterFrameBuffers waterFBOS = new WaterFrameBuffers();
+		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFBOS);
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
@@ -151,7 +153,7 @@ public class MainGameLoop {
 		entities.add(player);
 		float upperLimit = terrainGrid.getSize() * Terrain.SIZE();
 		float x, y, z;
-		for (int i = 0; i < 500; i++) {
+		for (int i = 0; i < 100; i++) {
 			do {
 				x = getRandomFloat(random, 0, upperLimit);
 				z = getRandomFloat(random, 0, upperLimit);
@@ -222,6 +224,11 @@ public class MainGameLoop {
 		*/
 		
 		
+		// ------ FBO and PP effects  -------
+		Fbo fbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_RENDER_BUFFER);
+		PostProcessing.init(loader);
+		
+		
 		// ------------ game loop ------------
 		
 		while(!Display.isCloseRequested()) {
@@ -260,7 +267,7 @@ public class MainGameLoop {
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			
 			// water reflection
-			fbos.bindReflectionFrameBuffer();
+			waterFBOS.bindReflectionFrameBuffer();
 			float distance = 2 * (camera.getPosition().y - waters.get(0).getHeight());
 			camera.getPosition().y -= distance;
 			camera.invertPitch();
@@ -269,18 +276,20 @@ public class MainGameLoop {
 			camera.invertPitch();
 			
 			// water refraction
-			fbos.bindRefractionFrameBuffer();
+			waterFBOS.bindRefractionFrameBuffer();
 			renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, waters.get(0).getHeight()));
 			
 			
-			// screen
+			// screen rendering
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0); // may not work with some drivers
-			fbos.unbindCurrentFrameBuffer();
+			waterFBOS.unbindCurrentFrameBuffer();
+			
+			fbo.bindFrameBuffer();
 			renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 100000)); // set to high value to be safe
 			waterRenderer.render(waters, camera, sun);
-			
-			
 			ParticleMaster.renderParticles(camera);
+			fbo.unbindFrameBuffer();
+			PostProcessing.doPostProcessing(fbo.getColourTexture());
 			
 			//guiRenderer.render(guis);
 			
@@ -291,10 +300,11 @@ public class MainGameLoop {
 		
 		
 		// ------------ clean up ------------
-		
+		PostProcessing.cleanUp();
+		fbo.cleanUp();
 		ParticleMaster.cleanUp();
 		TextMaster.cleanUp();
-		fbos.cleanUp();
+		waterFBOS.cleanUp();
 		waterShader.cleanUp();
 		guiRenderer.cleanUp();
 		renderer.cleanUp();

@@ -93,7 +93,7 @@ public class WaterFrameBuffers {
 		return frameBuffer;
 	}
 
-	private int createTextureAttachment( int width, int height) {
+	private int createTextureAttachment(int width, int height) {
 		int texture = GL11.glGenTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, width, height,
