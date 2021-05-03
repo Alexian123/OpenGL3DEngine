@@ -6,13 +6,12 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import toolbox.Settings;
 import toolbox.Maths;
 import entities.Camera;
 import entities.Light;
 
-public class TerrainShader extends ShaderProgram{
-	
-	private static final int MAX_LIGHTS = 4;
+public class TerrainShader extends ShaderProgram {
 	
 	private static final String VERTEX_FILE = "/shaders/terrainVertexShader.glsl";
 	private static final String FRAGMENT_FILE = "/shaders/terrainFragmentShader.glsl";
@@ -79,10 +78,10 @@ public class TerrainShader extends ShaderProgram{
 		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
 		location_pcfCount = super.getUniformLocation("pcfCount");
 		
-		location_lightPosition = new int[MAX_LIGHTS];
-		location_lightColor = new int[MAX_LIGHTS];
-		location_attenuation = new int[MAX_LIGHTS];
-		for (int i = 0; i < MAX_LIGHTS; ++i) {
+		location_lightPosition = new int[Settings.MAX_LIGHTS];
+		location_lightColor = new int[Settings.MAX_LIGHTS];
+		location_attenuation = new int[Settings.MAX_LIGHTS];
+		for (int i = 0; i < Settings.MAX_LIGHTS; ++i) {
 			location_lightPosition[i] = super.getUniformLocation("lightPosition[" + i + "]");
 			location_lightColor[i] = super.getUniformLocation("lightColor[" + i + "]");
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
@@ -149,7 +148,7 @@ public class TerrainShader extends ShaderProgram{
 	}
 	
 	public void loadLights(List<Light> lights) {
-		for (int i = 0; i < MAX_LIGHTS; ++i) {
+		for (int i = 0; i < Settings.MAX_LIGHTS; ++i) {
 			if (i < lights.size()) {
 				super.loadVector(location_lightPosition[i], lights.get(i).getPosition());
 				super.loadVector(location_lightColor[i], lights.get(i).getColor());

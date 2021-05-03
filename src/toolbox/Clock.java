@@ -8,11 +8,11 @@ public class Clock {
 	
 	private static float time = 10000;
 	
-	public static final float MAX_TIME = 24000;
+	public static final float MAX_TIME = 24 * Settings.TIME_FACTOR;
 	public static final float TWELVE_AM = 0;
-	public static final float SIX_AM = 6000;
-	public static final float EIGHT_AM = 8000;
-	public static final float SIX_PM = 18000;
+	public static final float SIX_AM = 6 * Settings.TIME_FACTOR;
+	public static final float EIGHT_AM = 8 * Settings.TIME_FACTOR;
+	public static final float SIX_PM = 18 * Settings.TIME_FACTOR;
 	
 	private static Vector3f skyColor = new Vector3f(0.5f, 0.5f, 0.5f);
 	

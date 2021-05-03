@@ -13,14 +13,12 @@ import models.RawModel;
 import renderEngine.Loader;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
-import toolbox.Constants;
+import toolbox.Settings;
 import toolbox.Maths;
 
 public class Terrain {
 	
-	private static final float SIZE = Constants.TERRAIN_TILE_SIZE;
-	private static final float MAX_HEIGHT = 40;
-	private static final float MAX_PIXEL_COLOR = 256 * 256 * 256;
+	private static final float SIZE = Settings.TERRAIN_TILE_SIZE;
 	
 	
 	private float x;
@@ -296,9 +294,9 @@ public class Terrain {
 			return 0;
 		}
 		float height = image.getRGB(x, z);
-		height += MAX_PIXEL_COLOR / 2f;
-		height /= MAX_PIXEL_COLOR / 2f;
-		height *= MAX_HEIGHT;
+		height += Settings.TERRAIN_MAX_PIXEL_COLOR / 2f;
+		height /= Settings.TERRAIN_MAX_PIXEL_COLOR / 2f;
+		height *= Settings.TERRAIN_MAX_HEIGHT;
 		return height;
 	}
 }

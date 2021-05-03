@@ -9,10 +9,9 @@ import org.lwjgl.util.vector.Vector4f;
 
 import entities.Light;
 import shaders.ShaderProgram;
+import toolbox.Settings;
 
-public class NormalMappingShader extends ShaderProgram{
-	
-	private static final int MAX_LIGHTS = 4;
+public class NormalMappingShader extends ShaderProgram {
 	
 	private static final String VERTEX_FILE = "/normalMappingRenderer/normalMapVShader.glsl";
 	private static final String FRAGMENT_FILE = "/normalMappingRenderer/normalMapFShader.glsl";
@@ -74,10 +73,10 @@ public class NormalMappingShader extends ShaderProgram{
 		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
 		location_pcfCount = super.getUniformLocation("pcfCount");
 		
-		location_lightPositionEyeSpace = new int[MAX_LIGHTS];
-		location_lightColour = new int[MAX_LIGHTS];
-		location_attenuation = new int[MAX_LIGHTS];
-		for (int i = 0 ;i < MAX_LIGHTS; i++) {
+		location_lightPositionEyeSpace = new int[Settings.MAX_LIGHTS];
+		location_lightColour = new int[Settings.MAX_LIGHTS];
+		location_attenuation = new int[Settings.MAX_LIGHTS];
+		for (int i = 0 ;i < Settings.MAX_LIGHTS; i++) {
 			location_lightPositionEyeSpace[i] = super.getUniformLocation("lightPositionEyeSpace[" + i + "]");
 			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
@@ -142,7 +141,7 @@ public class NormalMappingShader extends ShaderProgram{
 	}
 	
 	protected void loadLights(List<Light> lights, Matrix4f viewMatrix) {
-		for (int i = 0; i < MAX_LIGHTS; i++) {
+		for (int i = 0; i < Settings.MAX_LIGHTS; i++) {
 			if (i < lights.size()) {
 				super.loadVector(location_lightPositionEyeSpace[i], getEyeSpacePosition(lights.get(i), viewMatrix));
 				super.loadVector(location_lightColour[i], lights.get(i).getColor());

@@ -9,11 +9,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
+import toolbox.Settings;
+
 public class DisplayManager {
-	
-	private static final int WIDTH = 1280;
-	private static final int HEIGHT = 720;
-	private static final int FPS_CAP = 60;
 	
 	private static long lastFrameTime;
 	private static float delta;
@@ -24,7 +22,7 @@ public class DisplayManager {
 		.withProfileCore(true);
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
+			Display.setDisplayMode(new DisplayMode(Settings.GAME_WIDTH, Settings.GAME_HEIGHT));
 			Display.create(new PixelFormat().withSamples(4), attribs);
 			Display.setTitle("Java Game Engine");
 			GL11.glEnable(GL13.GL_MULTISAMPLE);
@@ -32,12 +30,12 @@ public class DisplayManager {
 			e.printStackTrace();
 		}
 		
-		GL11.glViewport(0,0, WIDTH, HEIGHT);
+		GL11.glViewport(0,0, Settings.GAME_WIDTH, Settings.GAME_HEIGHT);
 		lastFrameTime = getCurrentTime();
 	}
 	
 	public static void updateDisplay(){
-		Display.sync(FPS_CAP);
+		Display.sync(Settings.FPS_CAP);
 		Display.update();
 		long currentFrameTime = getCurrentTime();
 		delta = (currentFrameTime - lastFrameTime) / 1000f;

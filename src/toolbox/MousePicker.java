@@ -13,9 +13,6 @@ import entities.Camera;
 
 public class MousePicker {
 
-	private static final int RECURSION_COUNT = 200;
-	private static final float RAY_RANGE = 600;
-
 	private Vector3f currentRay = new Vector3f();
 
 	private Matrix4f projectionMatrix;
@@ -44,8 +41,8 @@ public class MousePicker {
 	public void update() {
 		viewMatrix = Maths.createViewMatrix(camera);
 		currentRay = calculateMouseRay();
-		if (intersectionInRange(0, RAY_RANGE, currentRay)) {
-			currentTerrainPoint = binarySearch(0, 0, RAY_RANGE, currentRay);
+		if (intersectionInRange(0, Settings.MOUSE_PICKER_RAY_RANGE, currentRay)) {
+			currentTerrainPoint = binarySearch(0, 0, Settings.MOUSE_PICKER_RAY_RANGE, currentRay);
 		} else {
 			currentTerrainPoint = null;
 		}
@@ -92,7 +89,7 @@ public class MousePicker {
 	
 	private Vector3f binarySearch(int count, float start, float finish, Vector3f ray) {
 		float half = start + ((finish - start) / 2f);
-		if (count >= RECURSION_COUNT) {
+		if (count >= Settings.MOUSE_PICKER_RECURSION_COUNT) {
 			Vector3f endPoint = getPointOnRay(ray, half);
 			Terrain terrain = getTerrain(endPoint.getX(), endPoint.getZ());
 			if (terrain != null) {

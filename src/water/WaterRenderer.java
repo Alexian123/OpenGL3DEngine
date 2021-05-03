@@ -15,7 +15,7 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import toolbox.Clock;
-import toolbox.Constants;
+import toolbox.Settings;
 import toolbox.Maths;
 import entities.Camera;
 import entities.Light;
@@ -24,15 +24,6 @@ public class WaterRenderer {
 	
 	private static final String DUDV_MAP = "maps/waterDudv";
 	private static final String NORMAL_MAP = "maps/waterNormal";
-	private static final float WAVE_SPEED = 0.03f;
-
-	private static final float DENSITY = Constants.FOG_DENSITY;
-	private static final float GRADIENT = Constants.FOG_GRADIENT;
-	
-	private static final float WAVE_STRENGTH = 0.04f;
-	private static final float SHINE_DAMPER = 20.0f;
-	private static final float REFLECTIVITY = 0.5f;
-	private static final float TILING = 6.0f;
 
 	private RawModel quad;
 	private WaterShader shader;
@@ -70,15 +61,15 @@ public class WaterRenderer {
 		shader.start();
 		shader.loadFarAndNearPlanes(MasterRenderer.NEAR_PLANE(), MasterRenderer.FAR_PLANE());
 		shader.loadSkyColor(Clock.getSkyColor());
-		shader.loadFog(DENSITY, GRADIENT);
+		shader.loadFog(Settings.FOG_DENSITY, Settings.FOG_GRADIENT);
 		shader.loadViewMatrix(camera); 
-		moveFactor += WAVE_SPEED * DisplayManager.getFrameTimeSeconds();
+		moveFactor += Settings.WATER_WAVE_SPEED * DisplayManager.getFrameTimeSeconds();
 		moveFactor %= 1;
 		shader.loadMoveFactor(moveFactor);
 		shader.loadLight(sun);
-		shader.loadShineVariables(SHINE_DAMPER, REFLECTIVITY);
-		shader.loadWaveStrength(WAVE_STRENGTH);
-		shader.loadTilingCount(TILING);
+		shader.loadShineVariables(Settings.WATER_SHINE_DAMPER, Settings.WATER_REFLECTIVITY);
+		shader.loadWaveStrength(Settings.WATER_WAVE_STRENGTH);
+		shader.loadTilingCount(Settings.WATER_TILING);
 		
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);

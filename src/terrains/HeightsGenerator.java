@@ -4,11 +4,9 @@ package terrains;
 
 import java.util.Random;
 
+import toolbox.Settings;
+
 public class HeightsGenerator {
-	
-	private static final float AMPLITUDE = 50f;
-	private static final int OCTAVES = 4;
-	private static final float ROUGHNESS = 0.3f;
 	
 	private Random random = new Random();
 	private int seed;
@@ -27,10 +25,10 @@ public class HeightsGenerator {
 	
 	public float generateHeight(int x, int z) {
 		float total = 0;
-		float d = (float) Math.pow(2, OCTAVES - 1);
-		for (int i = 0; i < OCTAVES; ++i) {
+		float d = (float) Math.pow(2, Settings.TERRAIN_OCTAVES - 1);
+		for (int i = 0; i < Settings.TERRAIN_OCTAVES; ++i) {
 			float freq = (float) (Math.pow(2, i) / d);
-			float amp = (float) Math.pow(ROUGHNESS, i) * AMPLITUDE;
+			float amp = (float) Math.pow(Settings.TERRAIN_ROUGHNESS, i) * Settings.TERRAIN_AMPLITUDE;
 			total += getInterpolatedNoise((x + xOffset) * freq, (z + zOffset) * freq) * amp;
 		}
 		return total;

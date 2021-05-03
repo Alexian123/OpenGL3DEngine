@@ -3,11 +3,11 @@ package entities;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import toolbox.Settings;
+
 public class Camera {
 	
-	private static final float DEFAULT_CAMERA_Y_OFFSET = 5;
-	
-	private float distanceFromPlayer = 25;  // original: 25
+	private float distanceFromPlayer = 25;
 	private float angleAroundPlayer = 0;
 	
 	private Vector3f position = new Vector3f(0, 0, 0);
@@ -58,7 +58,7 @@ public class Camera {
 		float offsetZ = (float) (hDist * Math.cos(Math.toRadians(theta)));
 		position.x = player.getPosition().x - offsetX;
 		position.z = player.getPosition().z - offsetZ;
-		position.y = player.getPosition().y + vDist + DEFAULT_CAMERA_Y_OFFSET;
+		position.y = player.getPosition().y + vDist + Settings.DEFAULT_CAMERA_Y_OFFSET;
 	}
 	
 	private float calculateHorizontalDistance() {

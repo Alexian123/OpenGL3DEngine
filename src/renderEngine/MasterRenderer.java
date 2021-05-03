@@ -21,24 +21,12 @@ import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import toolbox.Clock;
-import toolbox.Constants;
+import toolbox.Settings;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
 
 public class MasterRenderer {
-	
-	private static final float FOV = Constants.FOV;
-	private static final float NEAR_PLANE = Constants.NEAR_PLANE;
-	private static final float FAR_PLANE = 1000;
-	
-	private static final float DENSITY = Constants.FOG_DENSITY;
-	private static final float GRADIENT = Constants.FOG_GRADIENT;
-	
-	private static final float CEL_SHADING_LEVELS = 3.0f;
-	
-	private static final float SHADOW_TRANSITION_DISTANCE = Constants.SHADOW_TRANSITION_DISTANCE;
-	private static final int PCF_COUNT = Constants.PCF_COUNT;
 	
 	private Matrix4f projectionMatrix;
 	
@@ -75,11 +63,11 @@ public class MasterRenderer {
 	}
 	
 	public static float NEAR_PLANE() {
-		return NEAR_PLANE;
+		return Settings.NEAR_PLANE;
 	}
 	
 	public static float FAR_PLANE() {
-		return FAR_PLANE;
+		return Settings.FAR_PLANE;
 	}
 	
 	public Matrix4f getProjectionMatrix() {
@@ -115,14 +103,14 @@ public class MasterRenderer {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColor(skyColor);
-		shader.loadFog(DENSITY, GRADIENT);
+		shader.loadFog(Settings.FOG_DENSITY, Settings.FOG_GRADIENT);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
-		shader.loadCelShadingLevels(CEL_SHADING_LEVELS);
-		shader.loadShadowDistance(Constants.SHADOW_DISTANCE);
-		shader.loadTransitionDistance(SHADOW_TRANSITION_DISTANCE);
-		shader.loadShadowMapSize((float) Constants.SHADOW_MAP_SIZE);
-		shader.loadPcfCount(PCF_COUNT);
+		shader.loadCelShadingLevels(Settings.CEL_SHADING_LEVELS);
+		shader.loadShadowDistance(Settings.SHADOW_DISTANCE);
+		shader.loadTransitionDistance(Settings.SHADOW_TRANSITION_DISTANCE);
+		shader.loadShadowMapSize((float) Settings.SHADOW_MAP_SIZE);
+		shader.loadPcfCount(Settings.PCF_COUNT);
 		renderer.render(entities, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		shader.stop();
 		normalMappingRenderer.render(normalMapEntities, clipPlane, lights, camera, 
@@ -130,14 +118,14 @@ public class MasterRenderer {
 		terrainShader.start();
 		terrainShader.loadClipPlane(clipPlane);
 		terrainShader.loadSkyColor(skyColor);
-		terrainShader.loadFog(DENSITY, GRADIENT);
+		terrainShader.loadFog(Settings.FOG_DENSITY, Settings.FOG_GRADIENT);
 		terrainShader.loadLights(lights);
 		terrainShader.loadViewMatrix(camera);
-		terrainShader.loadCelShadingLevels(CEL_SHADING_LEVELS);
-		terrainShader.loadShadowDistance(Constants.SHADOW_DISTANCE);
-		terrainShader.loadTransitionDistance(SHADOW_TRANSITION_DISTANCE);
-		terrainShader.loadShadowMapSize((float) Constants.SHADOW_MAP_SIZE);
-		terrainShader.loadPcfCount(PCF_COUNT);
+		terrainShader.loadCelShadingLevels(Settings.CEL_SHADING_LEVELS);
+		terrainShader.loadShadowDistance(Settings.SHADOW_DISTANCE);
+		terrainShader.loadTransitionDistance(Settings.SHADOW_TRANSITION_DISTANCE);
+		terrainShader.loadShadowMapSize((float) Settings.SHADOW_MAP_SIZE);
+		terrainShader.loadPcfCount(Settings.PCF_COUNT);
 		terrainRenderer.render(terrains, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainShader.stop();
 		skyboxRenderer.render(camera, skyColor);
@@ -210,15 +198,15 @@ public class MasterRenderer {
 	private void createProjectionMatrix() {
 		projectionMatrix = new Matrix4f();
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
+		float y_scale = (float) ((1f / Math.tan(Math.toRadians(Settings.FOV / 2f))));
 		float x_scale = y_scale / aspectRatio;
-		float frustum_length = FAR_PLANE - NEAR_PLANE;
+		float frustum_length = Settings.FAR_PLANE - Settings.NEAR_PLANE;
 
 		projectionMatrix.m00 = x_scale;
 		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+		projectionMatrix.m22 = -((Settings.FAR_PLANE + Settings.NEAR_PLANE) / frustum_length);
 		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
+		projectionMatrix.m32 = -((2 * Settings.NEAR_PLANE * Settings.FAR_PLANE) / frustum_length);
 		projectionMatrix.m33 = 0;
 	}
 }

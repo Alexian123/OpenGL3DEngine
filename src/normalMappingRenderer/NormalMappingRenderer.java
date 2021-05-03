@@ -19,13 +19,10 @@ import models.TexturedModel;
 import renderEngine.MasterRenderer;
 import textures.ModelTexture;
 import toolbox.Clock;
-import toolbox.Constants;
+import toolbox.Settings;
 import toolbox.Maths;
 
 public class NormalMappingRenderer {
-
-	private static final float DENSITY = Constants.FOG_DENSITY;
-	private static final float GRADIENT = Constants.FOG_GRADIENT;
 
 	private NormalMappingShader shader;
 
@@ -97,14 +94,14 @@ public class NormalMappingRenderer {
 		shader.loadClipPlane(clipPlane);
 		Vector3f skyColor = Clock.getSkyColor();
 		shader.loadSkyColour(skyColor.x, skyColor.y, skyColor.z);
-		shader.loadFog(DENSITY, GRADIENT);
+		shader.loadFog(Settings.FOG_DENSITY, Settings.FOG_GRADIENT);
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		shader.loadLights(lights, viewMatrix);
 		shader.loadViewMatrix(viewMatrix);
-		shader.loadShadowDistance(Constants.SHADOW_DISTANCE);
-		shader.loadTransitionDistance(Constants.SHADOW_TRANSITION_DISTANCE);
-		shader.loadShadowMapSize((float) Constants.SHADOW_MAP_SIZE);
-		shader.loadPcfCount(Constants.PCF_COUNT);
+		shader.loadShadowDistance(Settings.SHADOW_DISTANCE);
+		shader.loadTransitionDistance(Settings.SHADOW_TRANSITION_DISTANCE);
+		shader.loadShadowMapSize((float) Settings.SHADOW_MAP_SIZE);
+		shader.loadPcfCount(Settings.PCF_COUNT);
 	}
 
 }

@@ -26,6 +26,7 @@ import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 import terrains.TerrainGrid;
+import terrains.TerrainGrid.PREDEFINED_SIZE;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import toolbox.Clock;
@@ -127,9 +128,9 @@ public class MainGameLoop {
 		List<Terrain> terrains = new ArrayList<>();
 		Random random = new Random();
 		int seed = random.nextInt(1_000_000_000);
-		final int gridSize = 2;
-		for (int i = 0; i < gridSize; ++i) {
-			for (int j = 0; j < gridSize; ++j) {
+		final TerrainGrid.PREDEFINED_SIZE gridSize = PREDEFINED_SIZE.TWO_BY_TWO;
+		for (int i = 0; i < gridSize.asInt(); ++i) {
+			for (int j = 0; j < gridSize.asInt(); ++j) {
 				terrains.add(new Terrain(i, j, loader, texturePack, blendMap, seed));
 			}
 		}

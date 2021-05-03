@@ -13,7 +13,7 @@ import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
 import toolbox.Clock;
-import toolbox.Constants;
+import toolbox.Settings;
 
 /**
  * This class is in charge of using all of the classes in the shadows package to
@@ -25,8 +25,6 @@ import toolbox.Constants;
  *
  */
 public class ShadowMapMasterRenderer {
-
-	private static final int SHADOW_MAP_SIZE = Constants.SHADOW_MAP_SIZE;
 
 	private ShadowFrameBuffer shadowFbo;
 	private ShadowShader shader;
@@ -52,7 +50,7 @@ public class ShadowMapMasterRenderer {
 	public ShadowMapMasterRenderer(Camera camera) {
 		shader = new ShadowShader();
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
-		shadowFbo = new ShadowFrameBuffer(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE);
+		shadowFbo = new ShadowFrameBuffer(Settings.SHADOW_MAP_SIZE, Settings.SHADOW_MAP_SIZE);
 		entityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
 	}
 
