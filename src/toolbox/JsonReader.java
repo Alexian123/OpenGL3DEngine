@@ -14,9 +14,10 @@ public class JsonReader {
 			Object obj = parser.parse(new FileReader(fileName));
 			return (JSONObject) obj;
 		} catch(FileNotFoundException fe) {
-            System.err.println("Can't open json file!");
+            System.err.println("Can't find json file!");
             fe.printStackTrace();
         } catch(Exception e) {
+        	System.err.println("Can't read json file!");
             e.printStackTrace();
         }
 		return null;
