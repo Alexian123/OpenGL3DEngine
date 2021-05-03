@@ -97,12 +97,18 @@ public class Settings {
 	private static int MOUSE_PICKER_RECURSION_COUNT;
 	private static float MOUSE_PICKER_RAY_RANGE;
 	
-	public static void init() { // must be called before creating the display
-		mainJsonObj = JsonReader.read(SETTINGS_FILE);
-		if (mainJsonObj == null) {
-			setDefaults();
-		} else {
+	public static void init() { 
+		// must be called before creating the display
+		try {
+			mainJsonObj = JsonReader.read(SETTINGS_FILE);
+			if (mainJsonObj == null) {
+				throw new NullPointerException();
+			}
 			importSettingsFromJson();
+		} catch (Exception e) {
+			System.err.println("Error encountered while trying to import settings.\nUsing defaults instead.");
+			e.printStackTrace();
+			setDefaults();
 		}
 	}
 	
