@@ -1,0 +1,136 @@
+{
+	"general": 
+	{
+		"game width": 1280,
+		"game height": 720,
+		"fps cap": 60,
+		"max lights": 4,
+		"gravity": -50.0,
+		"time factor": 1000.0,
+		"cel shading levels": 3.0
+	},
+	
+	"player":
+	{
+		"walk speed": 30.0,
+		"sprint speed": 150.0,
+		"turn speed": 160.0,
+		"jump power": 15.0
+	},
+	
+	"camera":
+	{
+		"far plane": 1000.0,
+		"fov": 70.0,
+		"near plane": 0.1,
+		"default y offset": 5.0
+	},
+	
+	"skybox":
+	{
+		"size": 500.0,
+		"lower limit": 0.0,
+		"upper limit": 50.0,
+		"cel shading levels": 10.0,
+		"rotation speeed": 0.3
+	},
+	
+	"terrain":
+	{
+		"tile size": 400.0,
+		"max height": 40.0,
+		"max pixel color": 16777216.0,
+		"amplitude": 50.0,
+		"octaves": 4,
+		"roughness": 0.3
+	},
+	
+	"lamps":
+	{
+		"offset mul factor": 15.0,
+		"attenuation":
+		{
+			"x": 1.0,
+			"y": 0.01,
+			"z": 0.002
+		}
+	},
+	
+	"fog":
+	{
+		"density": 0.0025,
+		"gradient": 3.0
+	},
+	
+	"sun":
+	{
+		"y position": 
+		{
+			"morning": 500.0,
+			"evening": 500.0,
+			"daytime": 1000.0,
+			"nighttime": -1000.0
+		},
+		"morning x position": -100.0,
+		"color":
+		{
+			"morning":
+			{
+				"r": 0.6,
+				"g": 0.6,
+				"b": 0.6
+			},
+			"daytime":
+			{
+				"r": 0.9,
+				"g": 0.9,
+				"b": 0.9
+			},
+			"evening":
+			{
+				"r": 0.4,
+				"g": 0.4,
+				"b": 0.4
+			},
+			"nighttime":
+			{
+				"r": 0.1,
+				"g": 0.1,
+				"b": 0.1
+			}
+		}
+	},
+	
+	"water":
+	{
+		"tile size": 200.0,
+		"reflection width": 640,
+		"reflection height": 360,
+		"refraction width": 1280,
+		"refraction height": 720,
+		"wave speed": 0.03,
+		"wave strength": 0.04,
+		"shine damper": 20.0,
+		"reflectivity": 0.5,
+		"tiling": 6.0
+	},
+	
+	"shadows":
+	{
+		"distance": 150.0,
+		"transition distance": 10.0,
+		"map size": 4096,
+		"pcf count": 2
+	},
+	
+	"post processing effects":
+	{
+		"contrast": 0.1
+	},
+	
+	"mouse picker":
+	{
+		"recursion count": 200,
+		"ray range": 600.0
+	}	
+}

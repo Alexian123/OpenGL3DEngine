@@ -31,6 +31,7 @@ import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import toolbox.Clock;
 import toolbox.MousePicker;
+import toolbox.Settings;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
 import water.WaterShader;
@@ -50,6 +51,8 @@ import guis.GuiTexture;
 public class MainGameLoop {
 
 	public static void main(String[] args) {
+		
+		Settings.init();  // import settings or use defaults; must be called first!
 		
 		// ------------ prepare display and _renderers ------------
 		
@@ -260,7 +263,7 @@ public class MainGameLoop {
 			normalMapEntities.get(2).increaseRotation(0, 1f, 0);
 			*/
 			
-			logCoords(player.getPosition());
+			//logCoords(player.getPosition());
 			
 			
 			renderer.renderShadowMap(allEntitiesList, sun);

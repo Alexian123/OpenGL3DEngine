@@ -24,6 +24,13 @@ import toolbox.Maths;
 
 public class NormalMappingRenderer {
 
+	private static final float FOG_DENSITY = Settings.getFOG_DENSITY();
+	private static final float FOG_GRADIENT = Settings.getFOG_GRADIENT();
+	private static final float SHADOW_DISTANCE = Settings.getSHADOW_DISTANCE();
+	private static final float SHADOW_TRANSITION_DISTANCE = Settings.getSHADOW_TRANSITION_DISTANCE();
+	private static final int SHADOW_MAP_SIZE = Settings.getSHADOW_MAP_SIZE();
+	private static final int PCF_COUNT = Settings.getPCF_COUNT();
+	
 	private NormalMappingShader shader;
 
 	public NormalMappingRenderer(Matrix4f projectionMatrix) {
@@ -94,14 +101,14 @@ public class NormalMappingRenderer {
 		shader.loadClipPlane(clipPlane);
 		Vector3f skyColor = Clock.getSkyColor();
 		shader.loadSkyColour(skyColor.x, skyColor.y, skyColor.z);
-		shader.loadFog(Settings.FOG_DENSITY, Settings.FOG_GRADIENT);
+		shader.loadFog(FOG_DENSITY, FOG_GRADIENT);
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		shader.loadLights(lights, viewMatrix);
 		shader.loadViewMatrix(viewMatrix);
-		shader.loadShadowDistance(Settings.SHADOW_DISTANCE);
-		shader.loadTransitionDistance(Settings.SHADOW_TRANSITION_DISTANCE);
-		shader.loadShadowMapSize((float) Settings.SHADOW_MAP_SIZE);
-		shader.loadPcfCount(Settings.PCF_COUNT);
+		shader.loadShadowDistance(SHADOW_DISTANCE);
+		shader.loadTransitionDistance(SHADOW_TRANSITION_DISTANCE);
+		shader.loadShadowMapSize((float) SHADOW_MAP_SIZE);
+		shader.loadPcfCount(PCF_COUNT);
 	}
 
 }

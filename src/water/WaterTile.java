@@ -4,7 +4,7 @@ import toolbox.Settings;
 
 public class WaterTile {
 	
-	public static final float TILE_SIZE = Settings.WATER_TILE_SIZE;
+	public static final float TILE_SIZE = Settings.getWATER_TILE_SIZE();
 	
 	private float height;
 	private float x,z;

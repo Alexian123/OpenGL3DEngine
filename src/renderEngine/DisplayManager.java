@@ -13,16 +13,20 @@ import toolbox.Settings;
 
 public class DisplayManager {
 	
+	private static final int WIDTH = Settings.getGAME_WIDTH();
+	private static final int HEIGHT = Settings.getGAME_HEIGHT();
+	private static final int FPS_CAP = Settings.getFPS_CAP();
+	
 	private static long lastFrameTime;
 	private static float delta;
 	
-	public static void createDisplay() {		
+	public static void createDisplay() {
 		ContextAttribs attribs = new ContextAttribs(3, 3)
 		.withForwardCompatible(true)
 		.withProfileCore(true);
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(Settings.GAME_WIDTH, Settings.GAME_HEIGHT));
+			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.create(new PixelFormat().withSamples(4), attribs);
 			Display.setTitle("Java Game Engine");
 			GL11.glEnable(GL13.GL_MULTISAMPLE);
@@ -30,12 +34,12 @@ public class DisplayManager {
 			e.printStackTrace();
 		}
 		
-		GL11.glViewport(0,0, Settings.GAME_WIDTH, Settings.GAME_HEIGHT);
+		GL11.glViewport(0,0, WIDTH, HEIGHT);
 		lastFrameTime = getCurrentTime();
 	}
 	
 	public static void updateDisplay(){
-		Display.sync(Settings.FPS_CAP);
+		Display.sync(FPS_CAP);
 		Display.update();
 		long currentFrameTime = getCurrentTime();
 		delta = (currentFrameTime - lastFrameTime) / 1000f;

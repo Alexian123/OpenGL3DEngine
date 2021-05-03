@@ -10,6 +10,12 @@ import toolbox.Settings;
 
 public class Player extends Entity {
 	
+	private static final float GRAVITY = Settings.getGRAVITY();
+	private static final float WALK_SPEED = Settings.getPLAYER_WALK_SPEED();
+	private static final float SPRINT_SPEED = Settings.getPLAYER_SPRINT_SPEED();
+	private static final float TURN_SPEED = Settings.getPLAYER_TURN_SPEED();
+	private static final float JUMP_POWER = Settings.getPLAYER_JUMP_POWER();
+	
 	private float currentSpeed = 0;
 	private float currentTurnSpeed = 0;
 	private float upwardsSpeed = 0;
@@ -27,7 +33,7 @@ public class Player extends Entity {
 		float dx = (float) (distance * Math.sin(Math.toRadians(super.getRotY())));
 		float dz = (float) (distance * Math.cos(Math.toRadians(super.getRotY())));
 		super.increasePosition(dx, 0, dz);
-		upwardsSpeed += Settings.GRAVITY * DisplayManager.getFrameTimeSeconds();
+		upwardsSpeed += GRAVITY * DisplayManager.getFrameTimeSeconds();
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
 		if (super.getPosition().y < terrainHeight) {
@@ -39,14 +45,13 @@ public class Player extends Entity {
 
 	private void jump() {
 		if (!isInAir) {
-			upwardsSpeed = Settings.PLAYER_JUMP_POWER;
+			upwardsSpeed = JUMP_POWER;
 			isInAir = true;
 		}
 	}
 	
 	private void checkInputs() {
-		float runSpeed = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? 
-				Settings.PLAYER_SPRINT_RUN_SPEED : Settings.PLAYER_NORMAL_RUN_SPEED;
+		float runSpeed = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? SPRINT_SPEED : WALK_SPEED;
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 			currentSpeed = runSpeed;
 		} else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
@@ -56,9 +61,9 @@ public class Player extends Entity {
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-			currentTurnSpeed = -Settings.PLAYER_TURN_SPEED;
+			currentTurnSpeed = -TURN_SPEED;
 		} else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-			currentTurnSpeed = Settings.PLAYER_TURN_SPEED;
+			currentTurnSpeed = TURN_SPEED;
 		} else {
 			currentTurnSpeed = 0;
 		}

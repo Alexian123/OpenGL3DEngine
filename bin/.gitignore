@@ -1,1 +1,12 @@
+/toolbox/
+/renderEngine/
+/entities/
+/normalMappingRenderer/
+/particles/
+/postProcessing/
+/shaders/
+/shadows/
+/skybox/
+/terrains/
+/water/
 /engineTester/

@@ -8,6 +8,8 @@ import renderEngine.DisplayManager;
 import toolbox.Settings;
 
 public class Particle {
+	
+	private static final float GRAVITY = Settings.getGRAVITY();
 
 	private Vector3f position;
 	private Vector3f velocity;
@@ -72,7 +74,7 @@ public class Particle {
 	}
 	
 	protected boolean update(Camera cam) {
-		velocity.y += Settings.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
+		velocity.y += GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
 		reusableChange.set(velocity);
 		reusableChange.scale(DisplayManager.getFrameTimeSeconds());
 		Vector3f.add(reusableChange, position, position);

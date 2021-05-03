@@ -8,6 +8,10 @@ import toolbox.Settings;
 
 public class HeightsGenerator {
 	
+	private static final float AMPLITUDE = Settings.getTERRAIN_AMPLITUDE();
+	private static final int OCTAVES = Settings.getTERRAIN_OCTAVES();
+	private static final float ROUGHNESS = Settings.getTERRAIN_ROUGHNESS();
+	
 	private Random random = new Random();
 	private int seed;
 	private int xOffset = 0;
@@ -25,10 +29,10 @@ public class HeightsGenerator {
 	
 	public float generateHeight(int x, int z) {
 		float total = 0;
-		float d = (float) Math.pow(2, Settings.TERRAIN_OCTAVES - 1);
-		for (int i = 0; i < Settings.TERRAIN_OCTAVES; ++i) {
+		float d = (float) Math.pow(2, OCTAVES - 1);
+		for (int i = 0; i < OCTAVES; ++i) {
 			float freq = (float) (Math.pow(2, i) / d);
-			float amp = (float) Math.pow(Settings.TERRAIN_ROUGHNESS, i) * Settings.TERRAIN_AMPLITUDE;
+			float amp = (float) Math.pow(ROUGHNESS, i) * AMPLITUDE;
 			total += getInterpolatedNoise((x + xOffset) * freq, (z + zOffset) * freq) * amp;
 		}
 		return total;

@@ -18,7 +18,9 @@ import toolbox.Maths;
 
 public class Terrain {
 	
-	private static final float SIZE = Settings.TERRAIN_TILE_SIZE;
+	private static final float SIZE = Settings.getTERRAIN_TILE_SIZE();
+	private static final float MAX_PIXEL_COLOR = Settings.getTERRAIN_MAX_PIXEL_COLOR();
+	private static final float MAX_HEIGHT = Settings.getTERRAIN_MAX_HEIGHT();
 	
 	
 	private float x;
@@ -294,9 +296,9 @@ public class Terrain {
 			return 0;
 		}
 		float height = image.getRGB(x, z);
-		height += Settings.TERRAIN_MAX_PIXEL_COLOR / 2f;
-		height /= Settings.TERRAIN_MAX_PIXEL_COLOR / 2f;
-		height *= Settings.TERRAIN_MAX_HEIGHT;
+		height += MAX_PIXEL_COLOR / 2f;
+		height /= MAX_PIXEL_COLOR / 2f;
+		height *= MAX_HEIGHT;
 		return height;
 	}
 }

@@ -15,7 +15,10 @@ import toolbox.Settings;
 
 public class SkyboxRenderer {
 	
-	private static final float SIZE = Settings.SKYBOX_SIZE;
+	private static final float SIZE = Settings.getSKYBOX_SIZE();
+	private static float LOWER_LIMIT = Settings.getSKYBOX_LOWER_LIMIT();
+	private static float UPPER_LIMIT = Settings.getSKYBOX_UPPER_LIMIT();
+	private static float CEL_SHADING_LEVELS = Settings.getSKYBOX_CEL_SHADING_LEVELS();
 	
 	private static final String DAY_TEX_PREFIX = "skybox/day/1/";
 	private static final String NIGHT_TEX_PREFIX = "skybox/night/1/";
@@ -53,8 +56,8 @@ public class SkyboxRenderer {
 		shader.loadViewMatrix(camera);
 		shader.loadFogColor(fogColor);
 		shader.loadCelShadingVariable(useCelShading);
-		shader.loadLimits(Settings.SKYBOX_LOWER_LIMIT, Settings.SKYBOX_UPPER_LIMIT);
-		shader.loadCelShadingLevels(Settings.SKYBOX_CEL_SHADING_LEVELS);
+		shader.loadLimits(LOWER_LIMIT, UPPER_LIMIT);
+		shader.loadCelShadingLevels(CEL_SHADING_LEVELS);
 		GL30.glBindVertexArray(cube.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		bindTextures();

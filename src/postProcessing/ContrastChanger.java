@@ -7,6 +7,8 @@ import toolbox.Settings;
 
 public class ContrastChanger {
 	
+	private static final float CONTRAST = Settings.getCONTRAST();
+	
 	private ImageRenderer renderer;
 	private ContrastShader shader;
 	
@@ -19,7 +21,7 @@ public class ContrastChanger {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-		shader.loadContrast(Settings.CONTRAST);
+		shader.loadContrast(CONTRAST);
 		renderer.renderQuad();
 		shader.stop();
 	}

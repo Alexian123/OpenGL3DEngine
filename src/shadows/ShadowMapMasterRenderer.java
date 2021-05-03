@@ -25,6 +25,8 @@ import toolbox.Settings;
  *
  */
 public class ShadowMapMasterRenderer {
+	
+	private static final int MAP_SIZE = Settings.getSHADOW_MAP_SIZE();
 
 	private ShadowFrameBuffer shadowFbo;
 	private ShadowShader shader;
@@ -50,7 +52,7 @@ public class ShadowMapMasterRenderer {
 	public ShadowMapMasterRenderer(Camera camera) {
 		shader = new ShadowShader();
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
-		shadowFbo = new ShadowFrameBuffer(Settings.SHADOW_MAP_SIZE, Settings.SHADOW_MAP_SIZE);
+		shadowFbo = new ShadowFrameBuffer(MAP_SIZE, MAP_SIZE);
 		entityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
 	}
 
