@@ -55,7 +55,7 @@ public class MainGameLoop {
 		
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
-		TextMaster.init(loader);
+		//TextMaster.init(loader);
 		
 		
 		TexturedModel playerModel = loader.loadTexturedModel("person", "entities/playerTexture");
