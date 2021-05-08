@@ -116,14 +116,9 @@ public class MainGameLoop {
 		boulder.getTexture().setNormalMap(loader.loadTexture("maps/boulderNormal"));
 		
 		
-		// particle textures
-		ParticleTexture fire = new ParticleTexture(loader.loadTexture("particles/fire"), 8, true);
-		/*
-		ParticleTexture cosmic = new ParticleTexture(loader.loadTexture("particles/cosmic"), 4, false);
-		ParticleTexture orange = new ParticleTexture(loader.loadTexture("particles/orange"), 4, true);
-		ParticleTexture star = new ParticleTexture(loader.loadTexture("particles/star"), 1, false);
-		ParticleTexture smoke = new ParticleTexture(loader.loadTexture("particles/smoke"), 8, false);
-		*/
+		// particle textures	
+		ParticleTexture particleAtlas = new ParticleTexture(loader.loadTexture("particles/atlas_test"), 4, false, 2);
+		
 	
 		
 		// ------------ add terrain grid ------------
@@ -215,17 +210,15 @@ public class MainGameLoop {
 		
 		
 		// ------------ add particles -------------
-		ParticleSystem system = new ParticleSystem(fire, 100, 2, 0.1f, 1.5f, 30f);
-		system.randomizeRotation();
-		/*
+		
 		ParticleSystem[] system = new ParticleSystem[5];
-		system[0] = new ParticleSystem(cosmic, 200, 10, 0.2f, 2, 3.6f);
-		system[1] = new ParticleSystem(orange, 200, 10, 0.2f, 2, 3.6f);
-		system[2] = new ParticleSystem(star, 200, 10, 0.2f, 2, 3.6f);
+		system[0] = new ParticleSystem(particleAtlas, 200, 10, 0.2f, 2, 3.6f);
+		system[1] = new ParticleSystem(particleAtlas, 200, 10, 0.2f, 2, 3.6f, 0);
+		system[2] = new ParticleSystem(particleAtlas, 200, 10, 0.2f, 2, 3.6f, 1);
 		system[2].randomizeRotation();
-		system[3] = new ParticleSystem(fire, 50, 2, 0.1f, 2, 30f);
-		system[4] = new ParticleSystem(smoke, 25, 2, 0.1f, 2, 30f);
-		*/
+		system[3] = new ParticleSystem(particleAtlas, 50, 2, 0.1f, 2, 30f, 2);
+		system[4] = new ParticleSystem(particleAtlas, 25, 2, 0.1f, 2, 30f, 3);
+		
 		
 		
 		// ------ FBO and PP effects  -------
@@ -243,17 +236,14 @@ public class MainGameLoop {
 			sun.move();
 			picker.update();
 			
-			/*
+			
 			final float yOffset = 30;
 			system[0].generateParticles(new Vector3f(173, 5 + yOffset, 142));
 			system[1].generateParticles(new Vector3f(185, 3 + yOffset, 185));
 			system[2].generateParticles(new Vector3f(137, 1 + yOffset, 180));
 			system[3].generateParticles(new Vector3f(92, 6 + yOffset, 172));
 			system[4].generateParticles(new Vector3f(49, 3 + yOffset, 161));
-			*/
-			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				system.generateParticles(new Vector3f(player.getPosition()));
-			}
+			
 			
 			ParticleMaster.update(camera);
 			

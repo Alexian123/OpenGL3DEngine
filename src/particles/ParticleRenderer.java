@@ -21,10 +21,11 @@ import toolbox.Maths;
 public class ParticleRenderer {
 	
 	private static final float[] VERTICES = {-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f};
-	private static final int MAX_INSTANCES = 10000; // max number of particles on screen
-	private static final int INSTANCE_DATA_LENGTH = 21;
+	private static final int MAX_INSTANCES = 10_000; // max number of particles on screen
+	private static final int INSTANCE_DATA_LENGTH = 23; // number of floats per instance
 	
-	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
+	private static final FloatBuffer buffer = 
+			BufferUtils.createFloatBuffer(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
 	
 	private RawModel quad;
 	private ParticleShader shader;
@@ -43,6 +44,7 @@ public class ParticleRenderer {
 		loader.addInstanceAttribute(quad.getVaoID(), vbo, 4, 4, INSTANCE_DATA_LENGTH, 12);
 		loader.addInstanceAttribute(quad.getVaoID(), vbo, 5, 4, INSTANCE_DATA_LENGTH, 16);
 		loader.addInstanceAttribute(quad.getVaoID(), vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
+		loader.addInstanceAttribute(quad.getVaoID(), vbo, 7, 2, INSTANCE_DATA_LENGTH, 21);
 		shader = new ParticleShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -78,13 +80,17 @@ public class ParticleRenderer {
 		data[pointer++] = particle.getTexOffset2().x;
 		data[pointer++] = particle.getTexOffset2().y;
 		data[pointer++] = particle.getBlend();
+		data[pointer++] = particle.getAtlasXOffset();
+		data[pointer++] = particle.getAtlasYOffset();
 	}
 	
 	private void bindTexture(ParticleTexture texture) {
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, texture.useAdditiveBlending() ? GL11.GL_ONE : GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, texture.useAdditiveBlending() ? 
+				GL11.GL_ONE : GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 		shader.loadNumberOfRows(texture.getNumberOfRows());
+		shader.loadNumberOfAtlasRows(texture.getNumberOfAtlasRows());
 	}
 	
 	private void updateModelViewMatrix(Vector3f position, float rotation, float scale, 
@@ -135,6 +141,7 @@ public class ParticleRenderer {
 		GL20.glEnableVertexAttribArray(4);
 		GL20.glEnableVertexAttribArray(5);
 		GL20.glEnableVertexAttribArray(6);
+		GL20.glEnableVertexAttribArray(7);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDepthMask(false);
 	}
@@ -149,6 +156,7 @@ public class ParticleRenderer {
 		GL20.glDisableVertexAttribArray(4);
 		GL20.glDisableVertexAttribArray(5);
 		GL20.glDisableVertexAttribArray(6);
+		GL20.glDisableVertexAttribArray(7);
 		GL30.glBindVertexArray(0);
 		shader.stop();
 	}

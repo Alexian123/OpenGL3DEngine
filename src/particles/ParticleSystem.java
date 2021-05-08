@@ -20,14 +20,28 @@ public class ParticleSystem {
 	private ParticleTexture texture;
 
 	private Random random = new Random();
+	
+	private int atlasIndex = 0;
 
-	public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
+	public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient, 
+			float lifeLength, float scale) {
 		this.texture = texture;
 		this.pps = pps;
 		this.averageSpeed = speed;
 		this.gravityComplient = gravityComplient;
 		this.averageLifeLength = lifeLength;
 		this.averageScale = scale;
+	}
+	
+	public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient, 
+			float lifeLength, float scale, int atlasIndex) {
+		this.texture = texture;
+		this.pps = pps;
+		this.averageSpeed = speed;
+		this.gravityComplient = gravityComplient;
+		this.averageLifeLength = lifeLength;
+		this.averageScale = scale;
+		this.atlasIndex = atlasIndex;
 	}
 
 	/**
@@ -82,16 +96,17 @@ public class ParticleSystem {
 
 	private void emitParticle(Vector3f center) {
 		Vector3f velocity = null;
-		if(direction!=null){
+		if (direction != null) {
 			velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
-		}else{
+		} else {
 			velocity = generateRandomUnitVector();
 		}
 		velocity.normalise();
 		velocity.scale(generateValue(averageSpeed, speedError));
 		float scale = generateValue(averageScale, scaleError);
 		float lifeLength = generateValue(averageLifeLength, lifeError);
-		new Particle(texture, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale);
+		new Particle(texture, new Vector3f(center), velocity, gravityComplient, lifeLength, 
+				generateRotation(), scale, atlasIndex);
 	}
 
 	private float generateValue(float average, float errorMargin) {

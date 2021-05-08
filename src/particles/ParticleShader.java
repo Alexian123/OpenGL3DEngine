@@ -12,6 +12,8 @@ public class ParticleShader extends ShaderProgram {
 
 	private int location_numberOfRows;
 	private int location_projectionMatrix;
+	private int location_numberOfAtlasRows;
+	
 	public ParticleShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
@@ -20,6 +22,7 @@ public class ParticleShader extends ShaderProgram {
 	protected void getAllUniformLocations() {
 		location_numberOfRows = super.getUniformLocation("numberOfRows");
 		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
+		location_numberOfAtlasRows = super.getUniformLocation("numberOfAtlasRows");
 	}
 
 	@Override
@@ -28,8 +31,13 @@ public class ParticleShader extends ShaderProgram {
 		super.bindAttribute(1, "modelViewMatrix");
 		super.bindAttribute(5, "texOffsets");
 		super.bindAttribute(6, "blendFactor");
+		super.bindAttribute(7, "atlasOffset");
 	}
 	
+	protected void loadNumberOfAtlasRows(float numberOfAtlasRows) {
+		super.loadFloat(location_numberOfAtlasRows, numberOfAtlasRows);
+	}
+
 	protected void loadNumberOfRows(float numberOfRows) {
 		super.loadFloat(location_numberOfRows, numberOfRows);
 	}

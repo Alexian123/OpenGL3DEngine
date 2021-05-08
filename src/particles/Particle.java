@@ -28,9 +28,11 @@ public class Particle {
 	private float distance;
 	
 	private Vector3f reusableChange = new Vector3f();
+	
+	private int atlasIndex;
 
-	public Particle(ParticleTexture texture, Vector3f position, Vector3f velocity, float gravitEffect, float lifeLength, float rotation,
-			float scale) {
+	public Particle(ParticleTexture texture, Vector3f position, Vector3f velocity, 
+			float gravitEffect, float lifeLength, float rotation, float scale, int atlasIndex) {
 		this.texture = texture;
 		this.position = position;
 		this.velocity = velocity;
@@ -38,7 +40,18 @@ public class Particle {
 		this.lifeLength = lifeLength;
 		this.rotation = rotation;
 		this.scale = scale;
+		this.atlasIndex = atlasIndex;
 		ParticleMaster.addParticle(this);
+	}
+	
+	protected float getAtlasXOffset() {
+		int col = atlasIndex % texture.getNumberOfAtlasRows();
+		return (float) col / (float) texture.getNumberOfAtlasRows();
+	}
+	
+	protected float getAtlasYOffset() {
+		int row = atlasIndex / texture.getNumberOfAtlasRows();
+		return (float) row / (float) texture.getNumberOfAtlasRows();
 	}
 
 	protected float getDistance() {
