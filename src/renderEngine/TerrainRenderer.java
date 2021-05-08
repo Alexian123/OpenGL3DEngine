@@ -25,6 +25,7 @@ public class TerrainRenderer {
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();
+		shader.loadNumberOfActiveLights(TerrainShader.MAX_LIGHTS);
 		shader.stop();
 	}
 

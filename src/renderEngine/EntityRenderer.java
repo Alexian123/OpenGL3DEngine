@@ -26,6 +26,7 @@ public class EntityRenderer {
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();
+		shader.loadNumberOfActiveLights(StaticShader.MAX_LIGHTS);
 		shader.stop();
 	}
 

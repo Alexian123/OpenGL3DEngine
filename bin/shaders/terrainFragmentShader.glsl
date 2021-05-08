@@ -1,11 +1,14 @@
 #version 400 core
 
+#define MAX_LIGHTS 21
+
 in vec2 pass_textureCoordinates;
 in vec3 surfaceNormal;
-in vec3 toLightVector[4];
+in vec3 toLightVector[MAX_LIGHTS];
 in vec3 toCameraVector;
 in float visibility;
 in vec4 shadowCoords;
+in float pass_numberOfActiveLights;
 
 out vec4 out_Color;
 
@@ -16,8 +19,8 @@ uniform sampler2D bTexture;
 uniform sampler2D blendMap;
 uniform sampler2D shadowMap;
 
-uniform vec3 lightColor[4];
-uniform vec3 attenuation[4];
+uniform vec3 lightColor[MAX_LIGHTS];
+uniform vec3 attenuation[MAX_LIGHTS];
 uniform vec3 skyColor;
 
 uniform float shineDamper;
@@ -65,7 +68,7 @@ void main(void) {
     vec3 totalDiffuse = vec3(0.0);
     vec3 totalSpecular = vec3(0.0);
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < pass_numberOfActiveLights; ++i) {
         float distance = length(toLightVector[i]);
         float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 	    vec3 unitLightVector = normalize(toLightVector[i]);

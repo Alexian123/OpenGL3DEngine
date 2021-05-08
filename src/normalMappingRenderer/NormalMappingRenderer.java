@@ -38,6 +38,7 @@ public class NormalMappingRenderer {
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();
+		shader.loadNumberOfActiveLights(NormalMappingShader.MAX_LIGHTS);
 		shader.stop();
 	}
 

@@ -18,7 +18,7 @@ public class StaticShader extends ShaderProgram {
 	private static final String VERTEX_FILE = "/shaders/vertexShader.glsl";
 	private static final String FRAGMENT_FILE = "/shaders/fragmentShader.glsl";
 	
-	private static final int MAX_LIGHTS = Settings.getMAX_LIGHTS();
+	public static final int MAX_LIGHTS = Settings.getMAX_LIGHTS();
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
@@ -43,6 +43,7 @@ public class StaticShader extends ShaderProgram {
 	private int location_transitionDistance;
 	private int location_shadowMapSize;
 	private int location_pcfCount;
+	private int location_numberOfActiveLights;
 
 
 	public StaticShader() {
@@ -78,6 +79,7 @@ public class StaticShader extends ShaderProgram {
 		location_transitionDistance = super.getUniformLocation("transitionDistance");
 		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
 		location_pcfCount = super.getUniformLocation("pcfCount");
+		location_numberOfActiveLights = super.getUniformLocation("numberOfActiveLights");
 		
 		location_lightPosition = new int[MAX_LIGHTS];
 		location_lightColor = new int[MAX_LIGHTS];
@@ -87,6 +89,10 @@ public class StaticShader extends ShaderProgram {
 			location_lightColor[i] = super.getUniformLocation("lightColor[" + i + "]");
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
 		}
+	}
+	
+	public void loadNumberOfActiveLights(float number) {
+		super.loadFloat(location_numberOfActiveLights, number);
 	}
 	
 	public void loadPcfCount(int pcfCount) {

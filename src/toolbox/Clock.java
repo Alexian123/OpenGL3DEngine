@@ -14,6 +14,7 @@ public class Clock {
 	public static final float TWELVE_AM = 0;
 	public static final float SIX_AM = 6 * TIME_FACTOR;
 	public static final float EIGHT_AM = 8 * TIME_FACTOR;
+	public static final float TWELVE_PM = 12 * TIME_FACTOR;
 	public static final float SIX_PM = 18 * TIME_FACTOR;
 	
 	private static Vector3f skyColor = new Vector3f(0.5f, 0.5f, 0.5f);
@@ -25,6 +26,27 @@ public class Clock {
 		MORNING,
 		DAY,
 		EVENING;
+	}
+	
+	public static void setExactTime(float time) {
+		Clock.time = time;
+	}
+	
+	public static void setTimeOfDay(TimeOfDay timeOfDay) {
+		switch (timeOfDay) {
+		case NIGHT:
+			time = TWELVE_AM;
+			break;
+		case MORNING:
+			time = SIX_AM;
+			break;
+		case DAY:
+			time = TWELVE_PM;
+			break;
+		case EVENING:
+			time = SIX_PM;
+			break;
+		}
 	}
 	
 	public static void setTimeSpeed(float speed) {
@@ -58,14 +80,14 @@ public class Clock {
 	}
 	
 	public static boolean isDayTime() {
-		return ((time >= SIX_AM && time < EIGHT_AM) || (time >= EIGHT_AM && time < SIX_PM));
+		return (time >= SIX_AM && time < SIX_PM);
 	}
 	
 	public static boolean isAMTime() {
-		return (time >= TWELVE_AM && time <= MAX_TIME / 2);
+		return (time >= TWELVE_AM && time < TWELVE_PM);
 	}
 	
-	public static void calculateSkyColor() {
+	private static void calculateSkyColor() {
 		if (Clock.isAMTime()) {
 			skyColor.x = time / MAX_TIME - 0.2f + 0.0444f;
 			skyColor.y = time / MAX_TIME - 0.2f + 0.12f;

@@ -4,7 +4,7 @@
 		"game width": 1280,
 		"game height": 720,
 		"fps cap": 60,
-		"max lights": 4,
+		"max lights": 5,
 		"gravity": -50.0,
 		"time factor": 1000.0,
 		"cel shading levels": 3.0

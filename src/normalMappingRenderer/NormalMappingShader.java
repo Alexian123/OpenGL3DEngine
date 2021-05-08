@@ -16,7 +16,7 @@ public class NormalMappingShader extends ShaderProgram {
 	private static final String VERTEX_FILE = "/normalMappingRenderer/normalMapVShader.glsl";
 	private static final String FRAGMENT_FILE = "/normalMappingRenderer/normalMapFShader.glsl";
 	
-	private static final int MAX_LIGHTS = Settings.getMAX_LIGHTS();
+	protected static final int MAX_LIGHTS = Settings.getMAX_LIGHTS();
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
@@ -40,6 +40,7 @@ public class NormalMappingShader extends ShaderProgram {
 	private int location_transitionDistance;
 	private int location_shadowMapSize;
 	private int location_pcfCount;
+	private int location_numberOfActiveLights;
 
 	public NormalMappingShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -74,6 +75,7 @@ public class NormalMappingShader extends ShaderProgram {
 		location_transitionDistance = super.getUniformLocation("transitionDistance");
 		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
 		location_pcfCount = super.getUniformLocation("pcfCount");
+		location_numberOfActiveLights = super.getUniformLocation("numberOfActiveLights");
 		
 		location_lightPositionEyeSpace = new int[MAX_LIGHTS];
 		location_lightColour = new int[MAX_LIGHTS];
@@ -83,6 +85,10 @@ public class NormalMappingShader extends ShaderProgram {
 			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
 		}
+	}
+	
+	public void loadNumberOfActiveLights(float number) {
+		super.loadFloat(location_numberOfActiveLights, number);
 	}
 	
 	public void loadPcfCount(int pcfCount) {

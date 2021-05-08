@@ -30,6 +30,7 @@ import terrains.TerrainGrid.PREDEFINED_SIZE;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import toolbox.Clock;
+import toolbox.Clock.TimeOfDay;
 import toolbox.MousePicker;
 import toolbox.Settings;
 import water.WaterFrameBuffers;
@@ -79,9 +80,10 @@ public class MainGameLoop {
 		// ------------------ load fonts & text ---------------------
 		
 		FontType font = loader.loadFont("candara");
-		GUIText text = new GUIText("Move with WASD, jump with Spacebar, hold Shift for super sprint, hold Right-click to move the camera and zoom with the scroll wheel.",
+		/*GUIText text = new GUIText("Move with WASD, jump with Spacebar, hold Shift for super sprint, hold Right-click to move the camera and zoom with the scroll wheel.",
 				1.2f, font, new Vector2f(0.01f, 0.01f), 1f, false);
 		text.setColor(1f, 0, 0);
+		*/
 		
 		
 		// ------------ load models and textures ------------
@@ -99,10 +101,8 @@ public class MainGameLoop {
 		pineTreeModel.getTexture().setShineDamper(1f);
 		pineTreeModel.getTexture().setHasTransparency(true);
 		
-		/*
-		TexturedModel rocks = loader.loadTexturedModel("floatingRocks", "entities/floatingRocks");
+		//TexturedModel rocks = loader.loadTexturedModel("floatingRocks", "entities/floatingRocks");
 		TexturedModel lamp = loader.loadTexturedModel("lamp", "entities/lamp");
-		*/
 		
 		// normal mapping models
 		
@@ -135,7 +135,7 @@ public class MainGameLoop {
 		TerrainGrid terrainGrid = new TerrainGrid(terrains, gridSize);
 		float a = terrains.get(0).getCenterX();
 		float b = terrains.get(0).getCenterZ();
-		player.setPosition(new Vector3f(a, terrains.get(0).getHeightOfTerrain(a, b), b));
+		//player.setPosition(new Vector3f(a, terrains.get(0).getHeightOfTerrain(a, b), b));
 		
 		
 		// ------------ add water ------------
@@ -159,11 +159,18 @@ public class MainGameLoop {
 			} while ((y = terrainGrid.getTerrainAt(x, z).getHeightOfTerrain(x, z)) < 0);
 			entities.add(new Entity(pineTreeModel, new Vector3f(x, y-0.3f, z), 0, getRandomFloat(random, 0, 1), 0, 1));
 		}
-		/*
-		entities.add(new Entity(rocks, new Vector3f(100,  4.7f,  100), 0, 0, 0, 100));
-		Lamp lampEntity = new Lamp(lamp, new Vector3f(58, terrains.get(0).getHeightOfTerrain(58, 46) - 0.1f, 46), 0, 0, 0, 1);
-		entities.add(lampEntity);
-		*/
+		
+		//entities.add(new Entity(rocks, new Vector3f(100,  4.7f,  100), 0, 0, 0, 100));
+		Lamp[] lamps = new Lamp[20];
+		for (int i = 0; i < 20; ++i) {
+			int j = i*10 + 10;
+			lamps[i] = new Lamp(lamp, new Vector3f(j, 
+					terrains.get(0).getHeightOfTerrain(j, j) - 0.1f, j), 0, 0, 0, 1);
+		}
+		
+		for (int i = 0; i < 20; ++i)
+			entities.add(lamps[i]);
+		
 		
 		
 		List<Entity> normalMapEntities = new ArrayList<>();
@@ -191,6 +198,8 @@ public class MainGameLoop {
 		//sun.setPosition(new Vector3f(1_000_000, 1_500_000, -1_000_000));
 		lights.add(sun);
 		//lights.add(lampEntity.getLight());
+		for (int i = 0; i < 20; ++i)
+				lights.add(lamps[i].getLight());
 		
 		
 		// ------------ add GUI ------------
@@ -204,13 +213,14 @@ public class MainGameLoop {
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrainGrid);
 		
 		
-		// ------------ set time speed ------------
+		// ------------ time settings ------------
 		
-		Clock.setTimeSpeed(100);
+		Clock.setTimeSpeed(0);
+		Clock.setTimeOfDay(TimeOfDay.DAY);
 		
 		
 		// ------------ add particles -------------
-		
+		/*
 		ParticleSystem[] system = new ParticleSystem[5];
 		system[0] = new ParticleSystem(particleAtlas, 200, 10, 0.2f, 2, 3.6f);
 		system[1] = new ParticleSystem(particleAtlas, 200, 10, 0.2f, 2, 3.6f, 0);
@@ -218,7 +228,7 @@ public class MainGameLoop {
 		system[2].randomizeRotation();
 		system[3] = new ParticleSystem(particleAtlas, 50, 2, 0.1f, 2, 30f, 2);
 		system[4] = new ParticleSystem(particleAtlas, 25, 2, 0.1f, 2, 30f, 3);
-		
+		*/
 		
 		
 		// ------ FBO and PP effects  -------
@@ -236,14 +246,14 @@ public class MainGameLoop {
 			sun.move();
 			picker.update();
 			
-			
+			/*
 			final float yOffset = 30;
 			system[0].generateParticles(new Vector3f(173, 5 + yOffset, 142));
 			system[1].generateParticles(new Vector3f(185, 3 + yOffset, 185));
 			system[2].generateParticles(new Vector3f(137, 1 + yOffset, 180));
 			system[3].generateParticles(new Vector3f(92, 6 + yOffset, 172));
 			system[4].generateParticles(new Vector3f(49, 3 + yOffset, 161));
-			
+			*/
 			
 			ParticleMaster.update(camera);
 			
