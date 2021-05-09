@@ -4,10 +4,11 @@
 		"game width": 1280,
 		"game height": 720,
 		"fps cap": 60,
-		"max lights": 5,
+		"max lights": 11,
 		"gravity": -50.0,
 		"time factor": 1000.0,
-		"cel shading levels": 3.0
+		"cel shading levels": 3.0,
+		"anti-aliasing": 4
 	},
 	
 	"player":
@@ -125,7 +126,8 @@
 	
 	"post processing effects":
 	{
-		"contrast": 0.1
+		"contrast": 0.1,
+		"blur": 8
 	},
 	
 	"mouse picker":

@@ -15,6 +15,7 @@ public class Settings {
 	private static float GRAVITY;
 	private static float TIME_FACTOR;
 	private static float CEL_SHADING_LEVELS;
+	private static int ANTI_ALIASING;
 	
 	// player
 	private static float PLAYER_WALK_SPEED;
@@ -92,6 +93,7 @@ public class Settings {
 	
 	// post processing effects
 	private static float CONTRAST;
+	private static int BLUR;
 	
 	// mouse picker
 	private static int MOUSE_PICKER_RECURSION_COUNT;
@@ -133,6 +135,8 @@ public class Settings {
 		TIME_FACTOR = doubleVal.floatValue();
 		doubleVal = (Double) section.get("cel shading levels");
 		CEL_SHADING_LEVELS = doubleVal.floatValue();
+		longVal = (Long) section.get("anti-aliasing");
+		ANTI_ALIASING = longVal.intValue();
 		
 		
 		// player
@@ -308,6 +312,8 @@ public class Settings {
 		section = (JSONObject) mainJsonObj.get("post processing effects");
 		doubleVal = (Double) section.get("contrast");
 		CONTRAST = doubleVal.floatValue();
+		longVal = (Long) section.get("blur");
+		BLUR = longVal.intValue();
 		
 		
 		// mouse picker
@@ -344,6 +350,10 @@ public class Settings {
 
 	public static float getCEL_SHADING_LEVELS() {
 		return CEL_SHADING_LEVELS;
+	}
+	
+	public static int getANTI_ALIASING() {
+		return ANTI_ALIASING;
 	}
 
 	public static float getPLAYER_WALK_SPEED() {
@@ -573,6 +583,10 @@ public class Settings {
 	public static float getCONTRAST() {
 		return CONTRAST;
 	}
+	
+	public static int getBLUR() {
+		return BLUR;
+	}
 
 	public static int getMOUSE_PICKER_RECURSION_COUNT() {
 		return MOUSE_PICKER_RECURSION_COUNT;
@@ -587,10 +601,11 @@ public class Settings {
 		GAME_WIDTH = 1280;
 		GAME_HEIGHT = 720;
 		FPS_CAP = 60;
-		MAX_LIGHTS = 4;
+		MAX_LIGHTS = 4; // can't be >= 21
 		GRAVITY = -50f;
 		TIME_FACTOR = 1000;
 		CEL_SHADING_LEVELS = 3.0f;
+		ANTI_ALIASING = 4;
 		
 		// player
 		PLAYER_WALK_SPEED = 30;
@@ -668,6 +683,7 @@ public class Settings {
 		
 		// post processing effects
 		CONTRAST = 0.1f;
+		BLUR = 8; // can't be <= 0
 		
 		// mouse picker
 		MOUSE_PICKER_RECURSION_COUNT = 200;

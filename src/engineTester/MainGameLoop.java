@@ -133,9 +133,8 @@ public class MainGameLoop {
 			}
 		}
 		TerrainGrid terrainGrid = new TerrainGrid(terrains, gridSize);
-		float a = terrains.get(0).getCenterX();
-		float b = terrains.get(0).getCenterZ();
-		//player.setPosition(new Vector3f(a, terrains.get(0).getHeightOfTerrain(a, b), b));
+		float c = (TerrainGrid.TILE_SIZE * gridSize.asInt()) / 2 - 1;
+		player.setPosition(new Vector3f(c, terrainGrid.getTerrainAt(c, c).getHeightOfTerrain(c, c), c));
 		
 		
 		// ------------ add water ------------
@@ -161,16 +160,6 @@ public class MainGameLoop {
 		}
 		
 		//entities.add(new Entity(rocks, new Vector3f(100,  4.7f,  100), 0, 0, 0, 100));
-		Lamp[] lamps = new Lamp[20];
-		for (int i = 0; i < 20; ++i) {
-			int j = i*10 + 10;
-			lamps[i] = new Lamp(lamp, new Vector3f(j, 
-					terrains.get(0).getHeightOfTerrain(j, j) - 0.1f, j), 0, 0, 0, 1);
-		}
-		
-		for (int i = 0; i < 20; ++i)
-			entities.add(lamps[i]);
-		
 		
 		
 		List<Entity> normalMapEntities = new ArrayList<>();
@@ -198,8 +187,6 @@ public class MainGameLoop {
 		//sun.setPosition(new Vector3f(1_000_000, 1_500_000, -1_000_000));
 		lights.add(sun);
 		//lights.add(lampEntity.getLight());
-		for (int i = 0; i < 20; ++i)
-				lights.add(lamps[i].getLight());
 		
 		
 		// ------------ add GUI ------------
@@ -232,7 +219,8 @@ public class MainGameLoop {
 		
 		
 		// ------ FBO and PP effects  -------
-		Fbo fbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_RENDER_BUFFER);
+		Fbo multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
+		Fbo outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		PostProcessing.init(loader);
 		
 		
@@ -240,7 +228,7 @@ public class MainGameLoop {
 		
 		while(!Display.isCloseRequested()) {
 			Clock.tick();
-			
+
 			player.move(terrainGrid.getTerrainAt(player.getPosition().x, player.getPosition().z));
 			camera.move();
 			sun.move();
@@ -288,12 +276,13 @@ public class MainGameLoop {
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0); // may not work with some drivers
 			waterFBOS.unbindCurrentFrameBuffer();
 			
-			fbo.bindFrameBuffer();
+			multisampleFbo.bindFrameBuffer();
 			renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 100000)); // set to high value to be safe
 			waterRenderer.render(waters, camera, sun);
 			ParticleMaster.renderParticles(camera);
-			fbo.unbindFrameBuffer();
-			PostProcessing.doPostProcessing(fbo.getColourTexture());
+			multisampleFbo.unbindFrameBuffer();
+			multisampleFbo.resolveToFbo(outputFbo);
+			PostProcessing.doPostProcessing(outputFbo.getColourTexture());
 			
 			//guiRenderer.render(guis);
 			
@@ -305,7 +294,8 @@ public class MainGameLoop {
 		
 		// ------------ clean up ------------
 		PostProcessing.cleanUp();
-		fbo.cleanUp();
+		multisampleFbo.cleanUp();
+		outputFbo.cleanUp();
 		ParticleMaster.cleanUp();
 		TextMaster.cleanUp();
 		waterFBOS.cleanUp();

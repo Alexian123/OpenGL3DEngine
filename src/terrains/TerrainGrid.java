@@ -2,7 +2,11 @@ package terrains;
 
 import java.util.List;
 
+import toolbox.Settings;
+
 public class TerrainGrid {
+	
+	public static final float TILE_SIZE = Settings.getTERRAIN_TILE_SIZE();
 	
 	private final Terrain[][] grid;
 	
